@@ -1,0 +1,739 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <NonVisualComponents>
+    <Component class="javax.persistence.EntityManager" name="em">
+      <Properties>
+        <Property name="persistenceUnit" type="java.lang.String" value="CovidDataAppPU"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="DbManager.getEm()"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="em.clear();"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.persistence.Query" name="countryQuery">
+      <Properties>
+        <Property name="query" type="java.lang.String" value=""/>
+        <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
+          <ComponentRef name="em"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="java.beans.Beans.isDesignTime() ? null : em.createNamedQuery(&quot;Country.findByData&quot;, Country.class)"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value=""/>
+      </AuxValues>
+    </Component>
+    <Component class="java.util.List" name="countryList">
+      <Properties>
+        <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
+          <ComponentRef name="countryQuery"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="for(Country c: countryList) { &#xa;    if(c.getCoviddataList() == null || c.getCoviddataList().isEmpty())&#xa;        c.setCoviddataList(em.createNamedQuery(&quot;Coviddata.findByCountry&quot;, Coviddata.class).setParameter(&quot;coutryname&quot;, c.getName()).getResultList());&#xa;}&#xa;Collections.sort(countryList);"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Country&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="java.util.List" name="deathList">
+      <Properties>
+        <Property name="observable" type="boolean" value="true"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList&lt;Coviddata&gt;())"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Coviddata&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="java.util.List" name="confirmedList">
+      <Properties>
+        <Property name="observable" type="boolean" value="true"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList&lt;Coviddata&gt;())"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Coviddata&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="java.util.List" name="recoveredList">
+      <Properties>
+        <Property name="observable" type="boolean" value="true"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList&lt;Coviddata&gt;())"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Coviddata&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.ButtonGroup" name="qntGroup">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="qntGroup.add(radioDay);&#xa;qntGroup.add(radioProod);&#xa;qntGroup.setSelected(radioDay.getModel(), true);"/>
+      </AuxValues>
+    </Component>
+    <Container class="javax.swing.JDialog" name="map">
+      <Properties>
+        <Property name="modal" type="boolean" value="true"/>
+        <Property name="resizable" type="boolean" value="false"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="map.setIconImage(new ImageIcon(getClass().getResource(&quot;/img/map.png&quot;)).getImage());&#xa;map.setTitle(&quot;&#x3a0;&#x3c1;&#x3bf;&#x3b2;&#x3bf;&#x3bb;&#x3ae; &#x3b4;&#x3b5;&#x3b4;&#x3bf;&#x3bc;&#x3ad;&#x3bd;&#x3c9;&#x3bd; &#x3c3;&#x3b5; &#x3c7;&#x3ac;&#x3c1;&#x3c4;&#x3b7;&quot;);      &#xa;&#xa;map.add(AppSystem.getBrowser());&#xa;map.pack();"/>
+      </AuxValues>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <EmptySpace min="0" pref="500" max="32767" attributes="0"/>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <EmptySpace min="0" pref="400" max="32767" attributes="0"/>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+    </Container>
+  </NonVisualComponents>
+  <Properties>
+    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+      <Dimension value="[840, 640]"/>
+    </Property>
+  </Properties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jTabbedPane1" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="96" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="jLabelFrom" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="fromDateTextField" min="-2" pref="85" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <Component id="jLabelTo" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="toDateTextField" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="toDateBuuton" min="-2" pref="29" max="-2" attributes="0"/>
+                                  <Component id="fromDateButton" min="-2" pref="29" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                              <Component id="selectCountryLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="countryComboBox" min="-2" pref="205" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="140" max="-2" attributes="0"/>
+                              <Component id="datesSearchButton" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jSeparator3" min="-2" pref="259" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="jSeparator2" alignment="1" min="-2" pref="254" max="-2" attributes="0"/>
+                                  <Component id="dateErrorLabel" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="jLabel1" max="32767" attributes="0"/>
+                                      <Component id="checkDeaths" max="32767" attributes="0"/>
+                                      <Component id="checkRecovered" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Component id="checkConfirmed" min="-2" max="-2" attributes="0"/>
+                                  <Component id="radioDay" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="radioProod" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="109" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="diagramButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="105" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="111" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="deleteDataButton" pref="147" max="32767" attributes="0"/>
+                          <Component id="mapButton" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="mapLoadingLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+          </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+              <Component id="Title" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="backToOptionsButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="Title" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="backToOptionsButton" alignment="3" min="-2" pref="56" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Component id="jTabbedPane1" pref="0" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="countryComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="selectCountryLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="fromDateButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jLabelFrom" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="fromDateTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="toDateBuuton" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jLabelTo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="toDateTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="dateErrorLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="datesSearchButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="jSeparator3" min="-2" pref="10" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                      <Component id="checkDeaths" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="checkRecovered" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="checkConfirmed" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="radioDay" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="radioProod" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="diagramButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jSeparator2" min="-2" pref="10" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="mapButton" min="-2" max="-2" attributes="0"/>
+                          <Component id="mapLoadingLabel" min="-2" pref="28" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="deleteDataButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JButton" name="backToOptionsButton">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/img/menu.png"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;p &gt;&#x39a;&#x3b5;&#x3bd;&#x3c4;&#x3c1;&#x3b9;&#x3ba;&#x3cc;&lt;/p&gt;&lt;p style=&quot;text-align:center&quot;&gt;&#x39c;&#x3b5;&#x3bd;&#x3bf;&#x3cd;&lt;/p&gt;&lt;/html&gt;"/>
+        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[114, 56]"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Container class="javax.swing.JTabbedPane" name="jTabbedPane1">
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
+      <SubComponents>
+        <Container class="javax.swing.JPanel" name="deathsPanel">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="&#x398;&#x3ac;&#x3bd;&#x3b1;&#x3c4;&#x3bf;&#x3b9;">
+                <Property name="tabTitle" type="java.lang.String" value="&#x398;&#x3ac;&#x3bd;&#x3b1;&#x3c4;&#x3bf;&#x3b9;"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="deathsTabLabel" min="-2" max="-2" attributes="0"/>
+                          <Component id="jScrollPane1" min="-2" pref="445" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="17" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jScrollPane1" pref="490" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="deathsTabLabel" min="-2" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+              <AuxValues>
+                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+              </AuxValues>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JTable" name="jTable1">
+                  <Properties>
+                    <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+                      <TableColumnModel selectionModel="0">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                      </TableColumnModel>
+                    </Property>
+                    <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+                      <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
+                    </Property>
+                  </Properties>
+                  <BindingProperties>
+                    <BindingProperty name="elements" source="deathList" target="jTable1" targetPath="elements" updateStrategy="0" immediately="true">
+                      <Subbinding sourcePath="${trndate}">
+                        <BindingParameter name="NAME" value="&#x397;&#x3bc;&#x3b5;&#x3c1;&#x3bf;&#x3bc;&#x3b7;&#x3bd;&#x3af;&#x3b1;"/>
+                        <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Date.class"/>
+                        <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
+                      </Subbinding>
+                      <Subbinding sourcePath="${proodqty}">
+                        <BindingParameter name="NAME" value="&#x3a3;&#x3c9;&#x3c1;&#x3b5;&#x3c5;&#x3c4;&#x3b9;&#x3ba;&#x3cc; &#x3c0;&#x3bb;&#x3ae;&#x3b8;&#x3bf;&#x3c2;"/>
+                        <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+                        <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
+                      </Subbinding>
+                      <Subbinding sourcePath="${qty}">
+                        <BindingParameter name="NAME" value="&#x397;&#x3bc;&#x3b5;&#x3c1;&#x3ae;&#x3c3;&#x3b9;&#x3bf; &#x3c0;&#x3bb;&#x3ae;&#x3b8;&#x3bf;&#x3c2;"/>
+                        <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+                        <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
+                      </Subbinding>
+                    </BindingProperty>
+                  </BindingProperties>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Component class="javax.swing.JLabel" name="deathsTabLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;span style=&quot;color:red&quot;&gt;&#x394;&#x3b5;&#x3bd; &#x3ad;&#x3c7;&#x3b5;&#x3c4;&#x3b5; &#x3b5;&#x3b9;&#x3c3;&#x3ac;&#x3b3;&#x3b5;&#x3b9; &#x3b4;&#x3b5;&#x3b4;&#x3bf;&#x3bc;&#x3ad;&#x3bd;&#x3b1; &#x3b8;&#x3b1;&#x3bd;&#x3ac;&#x3c4;&#x3c9;&#x3bd; &#x3b3;&#x3b9;&#x3b1; &#x3b1;&#x3c5;&#x3c4;&#x3ae;&#x3bd; &#x3c4;&#x3b7; &#x3c7;&#x3ce;&#x3c1;&#x3b1;&lt;/span&gt;&lt;/html&gt;"/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="deathsTabLabel.setVisible(false);"/>
+              </AuxValues>
+            </Component>
+          </SubComponents>
+        </Container>
+        <Container class="javax.swing.JPanel" name="recoveredPanel">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="&#x391;&#x3c3;&#x3b8;&#x3b5;&#x3bd;&#x3b5;&#x3af;&#x3c2; &#x3c0;&#x3bf;&#x3c5; &#x3ad;&#x3c7;&#x3bf;&#x3c5;&#x3bd; &#x3b1;&#x3bd;&#x3b1;&#x3ba;&#x3ac;&#x3bc;&#x3c8;&#x3b5;&#x3b9;">
+                <Property name="tabTitle" type="java.lang.String" value="&#x391;&#x3c3;&#x3b8;&#x3b5;&#x3bd;&#x3b5;&#x3af;&#x3c2; &#x3c0;&#x3bf;&#x3c5; &#x3ad;&#x3c7;&#x3bf;&#x3c5;&#x3bd; &#x3b1;&#x3bd;&#x3b1;&#x3ba;&#x3ac;&#x3bc;&#x3c8;&#x3b5;&#x3b9;"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jScrollPane3" min="-2" pref="445" max="-2" attributes="0"/>
+                          <Component id="recoveredTabLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="17" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="jScrollPane3" pref="490" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="recoveredTabLabel" min="-2" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Container class="javax.swing.JScrollPane" name="jScrollPane3">
+              <AuxValues>
+                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+              </AuxValues>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JTable" name="jTable3">
+                  <Properties>
+                    <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+                      <TableColumnModel selectionModel="0">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                      </TableColumnModel>
+                    </Property>
+                    <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+                      <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
+                    </Property>
+                  </Properties>
+                  <BindingProperties>
+                    <BindingProperty name="elements" source="recoveredList" target="jTable3" targetPath="elements" updateStrategy="0" immediately="true">
+                      <Subbinding sourcePath="${trndate}">
+                        <BindingParameter name="NAME" value="&#x397;&#x3bc;&#x3b5;&#x3c1;&#x3bf;&#x3bc;&#x3b7;&#x3bd;&#x3af;&#x3b1;"/>
+                        <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Date.class"/>
+                        <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
+                      </Subbinding>
+                      <Subbinding sourcePath="${proodqty}">
+                        <BindingParameter name="NAME" value="&#x3a3;&#x3c9;&#x3c1;&#x3b5;&#x3c5;&#x3c4;&#x3b9;&#x3ba;&#x3cc; &#x3c0;&#x3bb;&#x3ae;&#x3b8;&#x3bf;&#x3c2;"/>
+                        <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+                        <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
+                      </Subbinding>
+                      <Subbinding sourcePath="${qty}">
+                        <BindingParameter name="NAME" value="&#x397;&#x3bc;&#x3b5;&#x3c1;&#x3ae;&#x3c3;&#x3b9;&#x3bf; &#x3c0;&#x3bb;&#x3ae;&#x3b8;&#x3bf;&#x3c2;"/>
+                        <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+                        <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
+                      </Subbinding>
+                    </BindingProperty>
+                  </BindingProperties>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Component class="javax.swing.JLabel" name="recoveredTabLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;span style=&quot;color:red&quot;&gt;&#x394;&#x3b5;&#x3bd; &#x3ad;&#x3c7;&#x3b5;&#x3c4;&#x3b5; &#x3b5;&#x3b9;&#x3c3;&#x3ac;&#x3b3;&#x3b5;&#x3b9; &#x3b4;&#x3b5;&#x3b4;&#x3bf;&#x3bc;&#x3ad;&#x3bd;&#x3b1; &#x3b1;&#x3c3;&#x3b8;&#x3b5;&#x3bd;&#x3ce;&#x3bd; &#x3c0;&#x3bf;&#x3c5; &#x3ad;&#x3c7;&#x3bf;&#x3c5;&#x3bd; &#x3b1;&#x3bd;&#x3b1;&#x3ba;&#x3ac;&#x3bc;&#x3c8;&#x3b5;&#x3b9; &#x3b3;&#x3b9;&#x3b1; &#x3b1;&#x3c5;&#x3c4;&#x3ae;&#x3bd; &#x3c4;&#x3b7; &#x3c7;&#x3ce;&#x3c1;&#x3b1;&lt;/span&gt;&lt;/html&gt;"/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="recoveredTabLabel.setVisible(false);"/>
+              </AuxValues>
+            </Component>
+          </SubComponents>
+        </Container>
+        <Container class="javax.swing.JPanel" name="confirmedPanel">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="&#x395;&#x3c0;&#x3b9;&#x3b2;&#x3b5;&#x3b2;&#x3b1;&#x3b9;&#x3c9;&#x3bc;&#x3ad;&#x3bd;&#x3b1; &#x3ba;&#x3c1;&#x3bf;&#x3cd;&#x3c3;&#x3bc;&#x3b1;&#x3c4;&#x3b1;">
+                <Property name="tabTitle" type="java.lang.String" value="&#x395;&#x3c0;&#x3b9;&#x3b2;&#x3b5;&#x3b2;&#x3b1;&#x3b9;&#x3c9;&#x3bc;&#x3ad;&#x3bd;&#x3b1; &#x3ba;&#x3c1;&#x3bf;&#x3cd;&#x3c3;&#x3bc;&#x3b1;&#x3c4;&#x3b1;"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="confirmedTabLabel" min="-2" max="-2" attributes="0"/>
+                          <Component id="jScrollPane2" min="-2" pref="445" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jScrollPane2" pref="490" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="confirmedTabLabel" min="-2" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Container class="javax.swing.JScrollPane" name="jScrollPane2">
+              <AuxValues>
+                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+              </AuxValues>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JTable" name="jTable2">
+                  <Properties>
+                    <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+                      <TableColumnModel selectionModel="0">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                      </TableColumnModel>
+                    </Property>
+                    <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+                      <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
+                    </Property>
+                  </Properties>
+                  <BindingProperties>
+                    <BindingProperty name="elements" source="confirmedList" target="jTable2" targetPath="elements" updateStrategy="0" immediately="true">
+                      <Subbinding sourcePath="${trndate}">
+                        <BindingParameter name="NAME" value="&#x397;&#x3bc;&#x3b5;&#x3c1;&#x3bf;&#x3bc;&#x3b7;&#x3bd;&#x3af;&#x3b1;"/>
+                        <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Date.class"/>
+                        <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
+                      </Subbinding>
+                      <Subbinding sourcePath="${proodqty}">
+                        <BindingParameter name="NAME" value="&#x3a3;&#x3c9;&#x3c1;&#x3b5;&#x3c5;&#x3c4;&#x3b9;&#x3ba;&#x3cc; &#x3c0;&#x3bb;&#x3ae;&#x3b8;&#x3bf;&#x3c2;"/>
+                        <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+                        <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
+                      </Subbinding>
+                      <Subbinding sourcePath="${qty}">
+                        <BindingParameter name="NAME" value="&#x397;&#x3bc;&#x3b5;&#x3c1;&#x3ae;&#x3c3;&#x3b9;&#x3bf; &#x3c0;&#x3bb;&#x3ae;&#x3b8;&#x3bf;&#x3c2;"/>
+                        <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+                        <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
+                      </Subbinding>
+                    </BindingProperty>
+                  </BindingProperties>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Component class="javax.swing.JLabel" name="confirmedTabLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;span style=&quot;color:red&quot;&gt;&#x394;&#x3b5;&#x3bd; &#x3ad;&#x3c7;&#x3b5;&#x3c4;&#x3b5; &#x3b5;&#x3b9;&#x3c3;&#x3ac;&#x3b3;&#x3b5;&#x3b9; &#x3b4;&#x3b5;&#x3b4;&#x3bf;&#x3bc;&#x3ad;&#x3bd;&#x3b1; &#x3b5;&#x3c0;&#x3b9;&#x3b2;&#x3b5;&#x3b2;&#x3b1;&#x3b9;&#x3c9;&#x3bc;&#x3ad;&#x3bd;&#x3c9;&#x3bd; &#x3ba;&#x3c1;&#x3bf;&#x3c5;&#x3c3;&#x3bc;&#x3ac;&#x3c4;&#x3c9;&#x3bd; &#x3b3;&#x3b9;&#x3b1; &#x3b1;&#x3c5;&#x3c4;&#x3ae;&#x3bd; &#x3c4;&#x3b7; &#x3c7;&#x3ce;&#x3c1;&#x3b1;&lt;/span&gt;&lt;/html&gt;"/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="confirmedTabLabel.setVisible(false);"/>
+              </AuxValues>
+            </Component>
+          </SubComponents>
+        </Container>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JComboBox" name="countryComboBox">
+      <Properties>
+        <Property name="selectedIndex" type="int" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="-1" type="code"/>
+        </Property>
+        <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="&quot;&#x39a;&#x3ac;&#x3bd;&#x3c4;&#x3b5; &#x3ba;&#x3bb;&#x3b9;&#x3ba; &#x3b3;&#x3b9;&#x3b1; &#x3bd;&#x3b1; &#x3b5;&#x3c0;&#x3b9;&#x3bb;&#x3ad;&#x3be;&#x3b5;&#x3c4;&#x3b5; &#x3a7;&#x3ce;&#x3c1;&#x3b1;&quot;" type="code"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JComboBox&lt;Country&gt;(countryList.toArray(new Country[0]))"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Country&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="selectCountryLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x395;&#x3c0;&#x3b9;&#x3bb;&#x3ad;&#x3be;&#x3c4;&#x3b5; &#x3a7;&#x3ce;&#x3c1;&#x3b1;"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="Title">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="sansserif" size="18" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="&#x3a0;&#x3c1;&#x3bf;&#x3b2;&#x3bf;&#x3bb;&#x3ae; &#x394;&#x3b5;&#x3b4;&#x3bf;&#x3bc;&#x3ad;&#x3bd;&#x3c9;&#x3bd; Covid"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelFrom">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x391;&#x3c0;&#x3cc;:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="fromDateTextField">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelTo">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x388;&#x3c9;&#x3c2;:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="toDateTextField">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="datesSearchButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x391;&#x3bd;&#x3b1;&#x3b6;&#x3ae;&#x3c4;&#x3b7;&#x3c3;&#x3b7;"/>
+        <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;&#x395;&#x3bc;&#x3c6;&#x3b1;&#x3bd;&#x3af;&#x3b6;&#x3b5;&#x3b9; &#x3c4;&#x3b1; &#x3b4;&#x3b5;&#x3b4;&#x3bf;&#x3bc;&#x3ad;&#x3bd;&#x3b1; &#x3b3;&#x3b9;&#x3b1; &#x3c4;&#x3bf; &#x3b5;&#x3c0;&#x3b9;&#x3bb;&#x3b5;&#x3b3;&#x3bc;&#x3ad;&#x3bd;&#x3bf; &#x3b5;&#x3cd;&#x3c1;&#x3bf;&#x3c2; &#x3b7;&#x3bc;&#x3b5;&#x3c1;&#x3bf;&#x3bc;&#x3b7;&#x3bd;&#x3b9;&#x3ce;&#x3bd;&lt;br&gt;&lt;span style=&quot;color:red&quot;&gt;&#x3c0;&#x3c1;&#x3ad;&#x3c0;&#x3b5;&#x3b9; &#x3b7; &#x3b7;&#x3bc;&#x3b5;&#x3c1;&#x3bf;&#x3bc;&#x3b7;&#x3bd;&#x3af;&#x3b1; &#x3bc;&#x3ad;&#x3c7;&#x3c1;&#x3b9; &#x3bd;&#x3b1; &#x3bc;&#x3b7;&#x3bd; &#x3b5;&#x3af;&#x3bd;&#x3b1;&#x3b9; &#x3c0;&#x3c1;&#x3b9;&#x3bd; &#x3c4;&#x3b7;&#x3bd; &#x3b7;&#x3bc;&#x3b5;&#x3c1;&#x3bf;&#x3bc;&#x3b7;&#x3bd;&#x3af;&#x3b1; &#x3ad;&#x3c9;&#x3c2;&lt;/span&gt;&lt;/html&gt;&#xa;"/>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="fromDateButton">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/img/calendar.png"/>
+        </Property>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="toDateBuuton">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/img/calendar.png"/>
+        </Property>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="dateErrorLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;span style=&quot;color:red&quot;&gt;&#x397; &#x3b7;&#x3bc;/&#x3bd;&#x3af;&#x3b1; &#x3ad;&#x3c9;&#x3c2; &#x3c0;&#x3c1;&#x3ad;&#x3c0;&#x3b5;&#x3b9; &#x3bd;&#x3b1; &#x3b5;&#x3af;&#x3bd;&#x3b1;&#x3b9; &#x3bc;&#x3b5;&#x3c4;&#x3ac; &#x3c4;&#x3b7;&#x3bd; &#x3b7;&#x3bc;/&#x3bd;&#x3af;&#x3b1; &#x3b1;&#x3c0;&#x3cc;&lt;/span&gt;&lt;/html&gt;"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="dateErrorLabel.setVisible(false);"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="checkDeaths">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x398;&#x3ac;&#x3bd;&#x3b1;&#x3c4;&#x3bf;&#x3b9;"/>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="if(deathList.isEmpty()) checkDeaths.setEnabled(false);"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="checkRecovered">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x391;&#x3bd;&#x3ad;&#x3ba;&#x3b1;&#x3bc;&#x3c8;&#x3b1;&#x3bd;"/>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="if(recoveredList.isEmpty()) checkRecovered.setEnabled(false);"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="checkConfirmed">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x395;&#x3c0;&#x3b9;&#x3b2;&#x3b5;&#x3b2;. &#x3ba;&#x3c1;&#x3bf;&#x3cd;&#x3c3;&#x3bc;&#x3b1;&#x3c4;&#x3b1;"/>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="if(confirmedList.isEmpty()) checkConfirmed.setEnabled(false);"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="radioDay">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x394;&#x3b5;&#x3b4;&#x3bf;&#x3bc;&#x3ad;&#x3bd;&#x3b1; &#x3b7;&#x3bc;&#x3ad;&#x3c1;&#x3b1;&#x3c2;"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="radioProod">
+      <Properties>
+        <Property name="selected" type="boolean" value="true"/>
+        <Property name="text" type="java.lang.String" value="&#x3a3;&#x3c9;&#x3c1;&#x3b5;&#x3c5;&#x3c4;&#x3b9;&#x3ba;&#x3ac; &#x3b4;&#x3b5;&#x3b4;&#x3bf;&#x3bc;&#x3ad;&#x3bd;&#x3b1;"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="diagramButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x3a0;&#x3c1;&#x3bf;&#x3b2;&#x3bf;&#x3bb;&#x3ae; &#x3c3;&#x3b5; &#x3b4;&#x3b9;&#x3ac;&#x3b3;&#x3c1;&#x3b1;&#x3bc;&#x3bc;&#x3b1;"/>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSeparator" name="jSeparator2">
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x395;&#x3c0;&#x3b9;&#x3bb;&#x3bf;&#x3b3;&#x3ad;&#x3c2; &#x3b4;&#x3b9;&#x3b1;&#x3b3;&#x3c1;&#x3ac;&#x3bc;&#x3bc;&#x3b1;&#x3c4;&#x3bf;&#x3c2;"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="mapButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x3a0;&#x3c1;&#x3bf;&#x3b2;&#x3bf;&#x3bb;&#x3ae; &#x3c3;&#x3b5; &#x3c7;&#x3ac;&#x3c1;&#x3c4;&#x3b7;"/>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="deleteDataButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x394;&#x3b9;&#x3b1;&#x3b3;&#x3c1;&#x3b1;&#x3c6;&#x3ae; &#x3b4;&#x3b5;&#x3b4;&#x3bf;&#x3bc;&#x3ad;&#x3bd;&#x3c9;&#x3bd;"/>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="mapLoadingLabel">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/img/ajax-loader1.gif"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="mapLoadingLabel.setVisible(false);"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JSeparator" name="jSeparator3">
+    </Component>
+  </SubComponents>
+</Form>

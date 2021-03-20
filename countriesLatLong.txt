@@ -1,0 +1,7 @@
+Australialat-25.274398long133.775136eol
+Canadalat56.130366long-106.346771eol
+Chinalat35.86166long104.195397eol
+Denmarklat56.26392long9.501785eol
+Francelat46.227638long2.213749eol
+United_Kingdomlat55.378051long-3.435973eol
+Netherlandslat52.132633long5.291266eol

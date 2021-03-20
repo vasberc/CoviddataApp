@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html> 
+<head> 
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
+  <title>Google Maps Multiple Markers</title> 
+  <script src="http://maps.google.com/maps/api/js?sensor=false" 
+          type="text/javascript"></script>
+</head> 
+<body style="margin: 0; padding: 0;">
+  <div id="map" style="width: 834px; height: 441px;"></div>
+
+  <script type="text/javascript">
+    var locations = [
+        ["Greece, <br>Δεδομένα από: 15/03/2021 έως: 19/03/2021, <br>Θάνατοι=270, <br>Κρούσματα=11932, <br>Ανέκαμψαν=0", 39.0742, 21.8243],
+        ["Israel, <br>Δεδομένα από: 15/03/2021 έως: 19/03/2021, <br>Θάνατοι=Δεν υπάρχουν δεδομένα, <br>Κρούσματα=7632, <br>Ανέκαμψαν=Δεν υπάρχουν δεδομένα", 31.046051000000002, 34.851612],
+        ["Italy, <br>Δεδομένα από: 15/03/2021 έως: 19/03/2021, <br>Θάνατοι=2096, <br>Κρούσματα=Δεν υπάρχουν δεδομένα, <br>Ανέκαμψαν=81907", 41.87194, 12.56738],
+        ["Mexico, <br>Δεδομένα από: 15/03/2021 έως: 19/03/2021, <br>Θάνατοι=2509, <br>Κρούσματα=Δεν υπάρχουν δεδομένα, <br>Ανέκαμψαν=Δεν υπάρχουν δεδομένα", 23.6345, -102.5528]
+    ];
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 2,
+      center: new google.maps.LatLng(39.0742, 21.8243),
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+    var infowindow = new google.maps.InfoWindow();
+
+    var marker, i;
+
+    for (i = 0; i < locations.length; i++) {  
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+        map: map
+      });
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent(locations[i][0]);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+    }
+  </script>
+</body>
+</html>
