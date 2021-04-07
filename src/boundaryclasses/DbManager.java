@@ -61,7 +61,7 @@ public class DbManager {
             country.setCoviddataList(null);
             //Θα εισαχθεί αν δεν υπάρχει ήδη στην βάση δεδομένων
             if(!dbList.contains(country)) {
-                em.persist(country); // δημιουργώ τo query εισαγωγής
+                em.persist(country); 
                 inserted = true;
             }         
         }
