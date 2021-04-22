@@ -295,10 +295,12 @@ public class DataVPresenter implements Presenter {//DataManageView Presenter
                 //Εκτελούνται παράλληλα με το νήμα του Swigworker
                 serverList.clear();//Αδειάζει τον πίνακα του GUI
                 label = view.getDataLabel();
-                label.setText("<html>Πατώντας εισαγωγή θα εισάγετε δεδομένα είδος: "+ datatype.getLabelName()+
-                              "<br><span style=\"color:red\">Για να εισάγετε άλλο είδος επιλέξτε από τη λίστα "
+                label.setText("<html><span style=\"color:red\">Για να εισάγετε άλλο είδος επιλέξτε από τη λίστα "
                                       + "το είδος που επιθυμείτε και πατήστε λήψη δεδομένων ξανά</span></html>");
                 label.setForeground(Color.BLUE);
+                label = view.getKindLabel();
+                label.setText(datatype.getLabelName());
+                
                 view.getLoadingLabel().setVisible(true);
             }          
         });

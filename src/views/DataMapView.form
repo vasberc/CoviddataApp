@@ -30,7 +30,7 @@
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="for(Country c: mainCountryList) {&#xa;    if(c.getCoviddataList() == null || c.getCoviddataList().isEmpty())&#xa;        c.setCoviddataList(em.createNamedQuery(&quot;Coviddata.findByCountry&quot;, Coviddata.class).setParameter(&quot;coutryname&quot;, c.getName()).getResultList());&#xa;}&#xa;Collections.sort(mainCountryList);"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="for(Country c: mainCountryList) {    &#xa;    c.setCoviddataList(em.createNamedQuery(&quot;Coviddata.findByCountry&quot;, Coviddata.class).setParameter(&quot;coutryname&quot;, c.getName()).getResultList());&#xa;}&#xa;Collections.sort(mainCountryList);"/>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Country&gt;"/>
       </AuxValues>
     </Component>

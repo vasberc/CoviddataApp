@@ -55,13 +55,13 @@ public class DbManager {
                                  .getResultList();
         em.getTransaction().begin(); //ξεκινάω μια καινούργια συναλλαγή        
         for(Country country: serverList){            
-            //Εισαγωγή δεδομένων coviddata στο TreeMap
-            data.put(country.getName(), country.getCoviddataList());
-            //Θέτω null το coviddataList για εισαγωγής της χώρας στην βάση δεδομένων
-            country.setCoviddataList(null);
+            //Εισαγωγή δεδομένων coviddata στο TreeMap            
+            data.put(country.getName(), country.getCoviddataList());            
             //Θα εισαχθεί αν δεν υπάρχει ήδη στην βάση δεδομένων
             if(!dbList.contains(country)) {
-                em.persist(country); 
+                //Δημιουργία νέου αντικειμένου country για να μην χάσω την αναφορά στα coviddata
+                Country toPersist = new Country (country.getCountry(), country.getName(), country.getLat(), country.getLong1());
+                em.persist(toPersist); 
                 inserted = true;
             }         
         }

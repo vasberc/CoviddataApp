@@ -30,7 +30,7 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="for(Country c: countryList) { &#xa;    if(c.getCoviddataList() == null || c.getCoviddataList().isEmpty())&#xa;        c.setCoviddataList(em.createNamedQuery(&quot;Coviddata.findByCountry&quot;, Coviddata.class).setParameter(&quot;coutryname&quot;, c.getName()).getResultList());&#xa;}&#xa;Collections.sort(countryList);"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="for(Country c: countryList) { &#xa;    c.setCoviddataList(em.createNamedQuery(&quot;Coviddata.findByCountry&quot;, Coviddata.class).setParameter(&quot;coutryname&quot;, c.getName()).getResultList());&#xa;}&#xa;Collections.sort(countryList);"/>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Country&gt;"/>
       </AuxValues>
     </Component>

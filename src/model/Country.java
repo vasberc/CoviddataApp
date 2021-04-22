@@ -69,6 +69,14 @@ public class Country implements Serializable, Comparable<Country> {
         this.name = name;
     }
 
+    public Country(Integer country, String name, Double lat, Double long1) {
+        this.country = country;
+        this.name = name;
+        this.lat = lat;
+        this.long1 = long1;
+        this.coviddataList = null;
+    }
+
     public Integer getCountry() {
         return country;
     }

@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.TreeMap;
 import model.Country;
 import model.Coviddata;
 import okhttp3.OkHttpClient;
@@ -28,112 +29,119 @@ import okhttp3.Response;
  * 
  * 
  */
-public class ServerConnection{    
+public class ServerConnection{ 
+    
+    private static TreeMap<String, List<Country>> staticData = new TreeMap<>();
     //static μέθοδος για συλλογή δεδομένων 
-    public static List<Country> reciveData(CovidDataType datatype) {
+    public static List<Country> reciveData(CovidDataType datatype) {        
         //Λίστα που θα μπουν όλα τα δεδομένα
         List<Country> countries = new ArrayList<>();
-        //Το URL που θα πάρουμε όλα τα δεδομένα, αλλάζει με βάση το CovidDataType που περνάμε σαν όρισμα
-        String urlToCall = "https://covid2019-api.herokuapp.com/timeseries/"+datatype.getString();
-        OkHttpClient client=new OkHttpClient();        
-        Request request = new Request.Builder().url(urlToCall).build();        
-        
-        try (Response response = client.newCall(request).execute()) {
-            if (response.isSuccessful() && response.body() != null) {
-                String responseString=response.body().string();
-                
-                JsonParser parser = new JsonParser();
-                GsonBuilder gsonBuilder = new GsonBuilder();
-                //Βάζω τον custom adapter που έχω φτιάξει
-                gsonBuilder.registerTypeAdapter(Country.class, new CountryTypeAdapter());
-                Gson gson = gsonBuilder.create();
-                //Μετατροπή του responseString se jsonTree
-                JsonElement jsonTree = parser.parse(responseString);
-                //Κάνω το jsonTree JsonObject για να χρησιμοποιήσω την get()
-                JsonObject jsonObject = jsonTree.getAsJsonObject();
-                //Με την get() παίρνω τις χώρες σαν JsonElement που είναι εμφωλευμένες στο datatype
-                JsonElement jcountries = jsonObject.get(datatype.getString()); 
-                //Διατρέχω τα εμφωλευμένα Element και τα διαβάζω σύμφωνα με τον adapter που όρισα
-                for(JsonElement jCountry : jcountries.getAsJsonArray()){
-                    //Παίρνω το στοιχείο σαν Country
-                    Country country = gson.fromJson(jCountry ,Country.class);
-                    //Εάν υπάρχει ήδη η χώρα με το ίδιο όνομα μέσα στη λίστα
-                    if(countries.contains(country)){                        
-                        Country updatedCountry = countries.get(countries.indexOf(country));
-                        countries.remove(updatedCountry);//Την αφαιρώ
-                        //Ψάχνω τις ίδιες ημερομηνίες για να προσθέσω τις ποσότητες
-                        for(Coviddata d: updatedCountry.getCoviddataList())
-                            for(Coviddata dNew: country.getCoviddataList()){
-                                if(d.getTrndate().equals(dNew.getTrndate())){
-                                    d.setProodqty(d.getProodqty()+dNew.getProodqty());
-                                    //κάνω break από την τελευταία for για να ενημερώσω την επόμενη ημερομηνία
-                                    break;
-                                }               
-                            }
-                        //Τα θέτω null για να τα φτιάξω μετά από το αρχείο
-                        if(updatedCountry.getLat() != null) {
-                            updatedCountry.setLat(null);
-                            updatedCountry.setLong1(null);
-                        }   
-                        //Με το τέλος των 2 for βάζω στην λίστα την updatedCountry
-                        countries.add(updatedCountry);
-                    }
-                    //Αν δεν υπάρχει η χώρα την βάζω όπως είναι
-                    else countries.add(country);
-                }
-                //Διαπερνάω πάλι τις χώρες για να φτιάξω την ημερήσια ποσότητα και να θέσω id
-                for(Country country: countries){
-                    //Θέτω id με βάση το όνομα
-                    country.setCountry(country.getName().hashCode());
-                    int prevQnt = 0;//Σωρευτική ποσότητα προηγούμενης μέρας αρχικοποιείται σε 0 αφού δεν υπάρχει προηγούμενη μέρα
-                    //Διαπερνώ το coviddataList της χώρας
-                    for(Coviddata d: country.getCoviddataList()){
-                        //Θέτω το datatype σύμφωνα με το όρισμα που περάσαμε
-                        d.setDatakind((short)datatype.getValue());
-                        //Θέτω το dayQnt με βάση το prevQnt
-                        d.setQty(d.getProodqty()-prevQnt);
-                        //Κάνω το prevQnt να ισούται με το Proodqty της τωρινής μέρας
-                        prevQnt = d.getProodqty();
-                    }
-                    //Εάν η χώρα έχει null στα lat και long, θα τα διαβάσουμε από το αρχείο
-                    if(country.getLat() == null && country.getLong1() == null) {
-                        File countriesLatLong = new File("countriesLatLong.txt");
-                        Scanner scanner = new Scanner(countriesLatLong);
-                        //Διαπερνάει όλες τις γραμμές
-                        while (scanner.hasNextLine()) {
-                            //Κάνουμε τα ονόματα σε lower case για να μην υπάρχει τυχόν διαφορά
-                            String line = scanner.nextLine().toLowerCase();
-                            String name = country.getName().toLowerCase();
-                            //αρχικοποίηση των μεταβλητών
-                            double lat = 0;
-                            double long1 = 0;
-                            //Εάν η γραμμή έχει το όνομα της χώρας
-                            if(line.contains(name)) {
-                                //Διαβάζει το lat
-                                lat = Double.parseDouble(line.substring(line.indexOf("lat")+3, line.indexOf("long")));
-                                //Διαβάζει το long1
-                                long1 = Double.parseDouble(line.substring(line.indexOf("long")+4, line.indexOf("eol")));
-                                //Τα θέτει στην χώρα
-                                country.setLat(lat);
-                                country.setLong1(long1);
-                            }
+        if(!staticData.containsKey(datatype.getString())) {
+            //Το URL που θα πάρουμε όλα τα δεδομένα, αλλάζει με βάση το CovidDataType που περνάμε σαν όρισμα
+            String urlToCall = "https://covid2019-api.herokuapp.com/timeseries/"+datatype.getString();
+            OkHttpClient client=new OkHttpClient();        
+            Request request = new Request.Builder().url(urlToCall).build();        
+
+            try (Response response = client.newCall(request).execute()) {
+                if (response.isSuccessful() && response.body() != null) {
+                    String responseString=response.body().string();
+
+                    JsonParser parser = new JsonParser();
+                    GsonBuilder gsonBuilder = new GsonBuilder();
+                    //Βάζω τον custom adapter που έχω φτιάξει
+                    gsonBuilder.registerTypeAdapter(Country.class, new CountryTypeAdapter());
+                    Gson gson = gsonBuilder.create();
+                    //Μετατροπή του responseString se jsonTree
+                    JsonElement jsonTree = parser.parse(responseString);
+                    //Κάνω το jsonTree JsonObject για να χρησιμοποιήσω την get()
+                    JsonObject jsonObject = jsonTree.getAsJsonObject();
+                    //Με την get() παίρνω τις χώρες σαν JsonElement που είναι εμφωλευμένες στο datatype
+                    JsonElement jcountries = jsonObject.get(datatype.getString()); 
+                    //Διατρέχω τα εμφωλευμένα Element και τα διαβάζω σύμφωνα με τον adapter που όρισα
+                    for(JsonElement jCountry : jcountries.getAsJsonArray()){
+                        //Παίρνω το στοιχείο σαν Country
+                        Country country = gson.fromJson(jCountry ,Country.class);
+                        //Εάν υπάρχει ήδη η χώρα με το ίδιο όνομα μέσα στη λίστα
+                        if(countries.contains(country)){                        
+                            Country updatedCountry = countries.get(countries.indexOf(country));
+                            countries.remove(updatedCountry);//Την αφαιρώ
+                            //Ψάχνω τις ίδιες ημερομηνίες για να προσθέσω τις ποσότητες
+                            for(Coviddata d: updatedCountry.getCoviddataList())
+                                for(Coviddata dNew: country.getCoviddataList()){
+                                    if(d.getTrndate().equals(dNew.getTrndate())){
+                                        d.setProodqty(d.getProodqty()+dNew.getProodqty());
+                                        //κάνω break από την τελευταία for για να ενημερώσω την επόμενη ημερομηνία
+                                        break;
+                                    }               
+                                }
+                            //Τα θέτω null για να τα φτιάξω μετά από το αρχείο
+                            if(updatedCountry.getLat() != null) {
+                                updatedCountry.setLat(null);
+                                updatedCountry.setLong1(null);
+                            }   
+                            //Με το τέλος των 2 for βάζω στην λίστα την updatedCountry
+                            countries.add(updatedCountry);
                         }
-                        scanner.close();
+                        //Αν δεν υπάρχει η χώρα την βάζω όπως είναι
+                        else countries.add(country);
+                    }
+                    //Διαπερνάω πάλι τις χώρες για να φτιάξω την ημερήσια ποσότητα και να θέσω id
+                    for(Country country: countries){
+                        //Θέτω id με βάση το όνομα
+                        country.setCountry(country.getName().hashCode());
+                        int prevQnt = 0;//Σωρευτική ποσότητα προηγούμενης μέρας αρχικοποιείται σε 0 αφού δεν υπάρχει προηγούμενη μέρα
+                        //Διαπερνώ το coviddataList της χώρας
+                        for(Coviddata d: country.getCoviddataList()){
+                            //Θέτω το datatype σύμφωνα με το όρισμα που περάσαμε
+                            d.setDatakind((short)datatype.getValue());
+                            //Θέτω το dayQnt με βάση το prevQnt
+                            d.setQty(d.getProodqty()-prevQnt);
+                            //Κάνω το prevQnt να ισούται με το Proodqty της τωρινής μέρας
+                            prevQnt = d.getProodqty();
+                        }
+                        //Εάν η χώρα έχει null στα lat και long, θα τα διαβάσουμε από το αρχείο
+                        if(country.getLat() == null && country.getLong1() == null) {
+                            File countriesLatLong = new File("countriesLatLong.txt");
+                            Scanner scanner = new Scanner(countriesLatLong);
+                            //Διαπερνάει όλες τις γραμμές
+                            while (scanner.hasNextLine()) {
+                                //Κάνουμε τα ονόματα σε lower case για να μην υπάρχει τυχόν διαφορά
+                                String line = scanner.nextLine().toLowerCase();
+                                String name = country.getName().toLowerCase();
+                                //αρχικοποίηση των μεταβλητών
+                                double lat = 0;
+                                double long1 = 0;
+                                //Εάν η γραμμή έχει το όνομα της χώρας
+                                if(line.contains(name)) {
+                                    //Διαβάζει το lat
+                                    lat = Double.parseDouble(line.substring(line.indexOf("lat")+3, line.indexOf("long")));
+                                    //Διαβάζει το long1
+                                    long1 = Double.parseDouble(line.substring(line.indexOf("long")+4, line.indexOf("eol")));
+                                    //Τα θέτει στην χώρα
+                                    country.setLat(lat);
+                                    country.setLong1(long1);
+                                }
+                            }
+                            scanner.close();
+                        }
                     }
                 }
+                staticData.put(datatype.getString(), countries);
+                //firePropertyChange event
+                AppSystem.getPropChangeFirer().firePropertyChange("server conection", "", "Η σύνδεση με τον σέρβερ ολοκληρώθηκε, εισαγωγή χωρών στη βάση δεδομένων");
             }
-            //firePropertyChange event
-            AppSystem.getPropChangeFirer().firePropertyChange("server conection", "", "Η σύνδεση με τον σέρβερ ολοκληρώθηκε, εισαγωγή χωρών στη βάση δεδομένων");
+            catch (IOException e){
+                //Σε περίπτωση IOException, δίνω μήνυμα να γίνει ξανά η προσπάθεια
+                AppSystem.getPropChangeFirer().firePropertyChange("server conection", "", "<html><span style=\"color:red\">Η σύνδεση με τον σέρβερ απέτυχε, παρακαλώ δοκιμάστε ξανά</span></html>");
+                countries = null;//Επιστρέφει null για να μην εκτελεστεί η μέθοδος του DbManager
+            }
+            catch (Exception e){
+                //Σε άλλο Exception τερματίζω το πρόγραμμα
+                AppSystem.terminate("<html>Συνέβη ένα αναπάντεχο σφάλμα η εφαρμογή θα τερματιστεί</html>"); 
+            }
         }
-        catch (IOException e){
-            //Σε περίπτωση IOException, δίνω μήνυμα να γίνει ξανά η προσπάθεια
-            AppSystem.getPropChangeFirer().firePropertyChange("server conection", "", "<html><span style=\"color:red\">Η σύνδεση με τον σέρβερ απέτυχε, παρακαλώ δοκιμάστε ξανά</span></html>");
-            countries = null;//Επιστρέφει null για να μην εκτελεστεί η μέθοδος του DbManager
-        }
-        catch (Exception e){
-            //Σε άλλο Exception τερματίζω το πρόγραμμα
-            AppSystem.terminate("<html>Συνέβη ένα αναπάντεχο σφάλμα η εφαρμογή θα τερματιστεί</html>"); 
-        }
+        else 
+            countries = staticData.get(datatype.getString());
         return countries;
     } 
 }

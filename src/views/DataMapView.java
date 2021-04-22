@@ -116,7 +116,6 @@ public class DataMapView extends javax.swing.JPanel {
         em.clear();
 
         for(Country c: mainCountryList) {
-            if(c.getCoviddataList() == null || c.getCoviddataList().isEmpty())
             c.setCoviddataList(em.createNamedQuery("Coviddata.findByCountry", Coviddata.class).setParameter("coutryname", c.getName()).getResultList());
         }
         Collections.sort(mainCountryList);
